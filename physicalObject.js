@@ -7,8 +7,11 @@ function PhysicalObject () {
   this.frictionCoeff = -0.02
   this.gravity = createVector(0, 0.6)
 
-  // should this bounce form the walls?
+  // should this bounce from the walls?
   this.bouncy = false
+
+  // stop at canvas boundary
+  this.hits_boundary = true
 
   // width/height for collision detection
   this.size = createVector(0, 0)
@@ -34,25 +37,28 @@ function PhysicalObject () {
     this.velocity.add(this.acceleration)
     this.position.add(this.velocity)
 
-    if (this.bouncy) {
-      if (this.position.x + this.size.x > width) {
-        this.position.x = width - this.size.x
-        this.velocity.x = -Math.abs(this.velocity.x)
-      } else if (this.position.x - this.size.x < 0) {
-        this.position.x = this.size.x
-        this.velocity.x = Math.abs(this.velocity.x)
+    if (this.bouncy || this.hits_boundary) {
+      if (this.position.x + this.size.x / 2 > width) {
+        if (this.hits_boundary) this.position.x = width - this.size.x / 2
+        if (this.bouncy) this.velocity.x = -Math.abs(this.velocity.x)
+      } else if (this.position.x - this.size.x / 2 < 0) {
+        if (this.hits_boundary) this.position.x = this.size.x / 2
+        if (this.bouncy) this.velocity.x = Math.abs(this.velocity.x)
       }
 
-      if (this.position.y + this.size.y > height) {
-        this.position.y = height - this.size.y
-        this.velocity.y = -Math.abs(this.velocity.y)
+      if (this.position.y + this.size.y / 2 > height) {
+        if (this.hits_boundary) this.position.y = height - this.size.y / 2
+        if (this.bouncy) this.velocity.y = -Math.abs(this.velocity.y)
         this.touches_ground = true
-      } else if (this.position.y - this.size.y < 0) {
-        this.position.y = this.size.y
-        this.velocity.y = Math.abs(this.velocity.y)
+      } else if (this.position.y - this.size.y / 2 < 0) {
+        if (this.hits_boundary) this.position.y = this.size.y / 2
+        if (this.bouncy) this.velocity.y = Math.abs(this.velocity.y)
       }
     }
 
     this.acceleration = createVector(0, 0)
+
+    // debug BB
+    //rect(this.position.x - this.size.x/2, this.position.y - this.size.y/2,this.size.x, this.size.y)
   }
 }

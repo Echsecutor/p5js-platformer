@@ -1,7 +1,7 @@
 function Star() {
   this.object = new PhysicalObject();
 
-  this.object.size.x = 10;
+  this.object.size.x = 20;
   this.object.size.y = this.object.size.x;
 
   this.object.position.x = random(width);
@@ -15,12 +15,12 @@ function Star() {
     this.object.update();
     fill(255, 255, 0);
 
-    triangle(this.object.position.x, this.object.position.y - this.object.size.y,
-      this.object.position.x - this.object.size.x, this.object.position.y + this.object.size.y / 2,
-      this.object.position.x + this.object.size.x, this.object.position.y + this.object.size.y / 2);
-    triangle(this.object.position.x, this.object.position.y + this.object.size.y,
-      this.object.position.x - this.object.size.x, this.object.position.y - this.object.size.y / 2,
-      this.object.position.x + this.object.size.x, this.object.position.y - this.object.size.y / 2);
+    triangle(this.object.position.x, this.object.position.y - this.object.size.y/2,
+      this.object.position.x - this.object.size.x/2, this.object.position.y + this.object.size.y / 4,
+      this.object.position.x + this.object.size.x/2, this.object.position.y + this.object.size.y / 4);
+    triangle(this.object.position.x, this.object.position.y + this.object.size.y/2,
+      this.object.position.x - this.object.size.x/2, this.object.position.y - this.object.size.y / 4,
+      this.object.position.x + this.object.size.x/2, this.object.position.y - this.object.size.y / 4);
   }
 
 }
