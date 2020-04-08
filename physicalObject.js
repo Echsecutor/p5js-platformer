@@ -34,25 +34,30 @@ function PhysicalObject () {
 
     this.acceleration.add(p5.Vector.mult(this.velocity, this.frictionCoeff))
     //see https://p5js.org/reference/#/p5.Vector/add
-    this.velocity.add(this.acceleration)
-    this.position.add(this.velocity)
+    this.velocity.add(p5.Vector.mult(this.acceleration, 0.04 * deltaTime))
+    this.position.add(p5.Vector.mult(this.velocity, 0.04 * deltaTime))
 
     if (this.bouncy || this.hits_boundary) {
       if (this.position.x + this.size.x / 2 > width) {
         if (this.hits_boundary) this.position.x = width - this.size.x / 2
+
         if (this.bouncy) this.velocity.x = -Math.abs(this.velocity.x)
+        else this.velocity.x = 0
       } else if (this.position.x - this.size.x / 2 < 0) {
         if (this.hits_boundary) this.position.x = this.size.x / 2
         if (this.bouncy) this.velocity.x = Math.abs(this.velocity.x)
+        else this.velocity.x = 0
       }
 
       if (this.position.y + this.size.y / 2 > height) {
         if (this.hits_boundary) this.position.y = height - this.size.y / 2
         if (this.bouncy) this.velocity.y = -Math.abs(this.velocity.y)
+        else this.velocity.y = 0
         this.touches_ground = true
       } else if (this.position.y - this.size.y / 2 < 0) {
         if (this.hits_boundary) this.position.y = this.size.y / 2
         if (this.bouncy) this.velocity.y = Math.abs(this.velocity.y)
+        else this.velocity.y = 0
       }
     }
 

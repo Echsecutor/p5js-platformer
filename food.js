@@ -1,4 +1,4 @@
-function Star() {
+function Food() {
   this.object = new PhysicalObject();
 
   this.object.size.x = 20;

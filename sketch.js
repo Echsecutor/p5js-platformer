@@ -24,7 +24,7 @@ function draw() {
   text(msg, 10, 10, width - 10, height - 10);
 
   if (stars.length < 10) {
-    stars.push(new Star());
+    stars.push(new Food());
   }
 
   for (var i = 0; i < stars.length; i++) {
