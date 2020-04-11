@@ -19,7 +19,8 @@ function reset () {
   player = new Player()
   food = []
   platforms = []
-  game_mode=GameModes.playing
+  game_mode = GameModes.playing
+  msg = 'Use the arrow keys to move!'
 }
 
 function setup () {
@@ -30,6 +31,16 @@ function setup () {
 function windowResized () {
   resizeCanvas(windowWidth, windowHeight)
 }
+
+function reset_if_dead () {
+  if (game_mode != GameModes.playing) {
+    reset()
+  }
+}
+
+var touchStarted = reset_if_dead
+
+var keyPressed = reset_if_dead
 
 function game_draw () {
   if (food.length < num_food) {
@@ -46,6 +57,10 @@ function game_draw () {
       msg = 'Points: ' + points
       i--
     } else {
+      if (food[i].object.position.y > height - food[i].object.size.y) {
+        food[i].object.position.y = food[i].object.size.y + 1
+        food[i].object.position.x = random(width)
+      }
       food[i].draw()
     }
   }
