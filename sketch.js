@@ -1,41 +1,100 @@
-var player;
-var stars = [];
-var points = 0;
+'use strict'
 
-var msg = "Use the arrow keys to move!";
+var player
+var food = []
+var platforms = []
+var points = 0
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
+var msg = 'Use the arrow keys to move!'
 
-  createCanvas(width, height);
-  player = new Player();
+const num_food = 10
+const num_platforms = 5
 
+const GameModes = Object.freeze({ playing: 1, loose: 2 })
+
+var game_mode = GameModes.playing
+
+function reset () {
+  points = 0
+  player = new Player()
+  food = []
+  platforms = []
+  game_mode=GameModes.playing
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+function setup () {
+  createCanvas(windowWidth, windowHeight)
+  reset()
 }
 
-function draw() {
-  background(0);
-  player.draw();
+function windowResized () {
+  resizeCanvas(windowWidth, windowHeight)
+}
 
-  fill(255, 255, 50);
-  text(msg, 10, 10, width - 10, height - 10);
-
-  if (stars.length < 10) {
-    stars.push(new Food());
+function game_draw () {
+  if (food.length < num_food) {
+    food.push(new Food())
+  }
+  if (platforms.length < num_platforms) {
+    platforms.push(new Platform())
   }
 
-  for (var i = 0; i < stars.length; i++) {
-    if (player.object.collides_with(stars[i].object)) {
-      stars.splice(i, 1);
-      points++;
-      stars.push(new Star())
-      msg = "Stars Eaten: " + points
-      i--;
+  for (var i = 0; i < food.length; i++) {
+    if (player.object.collides_with(food[i].object)) {
+      food.splice(i, 1)
+      points++
+      msg = 'Points: ' + points
+      i--
     } else {
-      stars[i].draw();
+      food[i].draw()
     }
+  }
+
+  var landing = food.concat([player])
+
+  for (var i = 0; i < platforms.length; i++) {
+    platforms[i].draw()
+    for (var j = 0; j < landing.length; j++) {
+      if (
+        landing[j].object.collides_with(platforms[i].object) &&
+        platforms[i].object.position.y > landing[j].object.position.y
+      ) {
+        landing[j].object.touches_ground = true
+        landing[j].object.velocity.y = Math.min(landing[j].object.velocity.y, 0)
+        landing[j].object.position.y =
+          platforms[i].object.position.y -
+          platforms[i].object.size.y / 2 -
+          landing[j].object.size.y / 2
+      }
+    }
+
+    if (platforms[i].object.position.y > height - platforms[i].object.size.y) {
+      //console.log('removing platform ' + i)
+      platforms.splice(i, 1)
+      i--
+    }
+  }
+
+  if (player.object.position.y > height - player.object.size.y) {
+    game_mode = GameModes.loose
+  }
+  player.draw()
+}
+
+function draw () {
+  background(0)
+
+  fill(255, 255, 50)
+  textAlign(CENTER)
+  textSize(16)
+  text(msg, 10, 10, width - 10, height - 10)
+
+  if (game_mode == GameModes.playing) {
+    game_draw()
+  } else if (game_mode == GameModes.loose) {
+    fill(255, 0, 0)
+    textAlign(CENTER)
+    textSize(50)
+    text('GAME OVER', 10, height / 2, width - 10, height / 2)
   }
 }

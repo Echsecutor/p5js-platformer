@@ -2,7 +2,7 @@ function Player () {
   this.object = new PhysicalObject()
 
   this.object.position.x = width / 2
-  this.object.position.y = height / 2
+  this.object.position.y = 50
   this.object.size.x = 30
   this.object.size.y = this.object.size.x
 
@@ -15,7 +15,8 @@ function Player () {
   }
 
   this.control = function () {
-    if (!this.object.touches_ground) return
+    // more realistic but anoying
+    // if (!this.object.touches_ground) return
 
     var speed = 2
 
@@ -25,8 +26,8 @@ function Player () {
     if (keyIsDown(RIGHT_ARROW)) {
       this.object.acceleration.x += speed
     }
-    if (keyIsDown(UP_ARROW)) {
-      this.object.acceleration.y += -10 * speed
+    if (keyIsDown(UP_ARROW) && this.object.touches_ground) {
+      this.object.acceleration.y += -15 * speed
     }
 
     if (touches.length > 0) {
