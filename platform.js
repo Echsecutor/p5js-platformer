@@ -5,10 +5,10 @@ function Platform () {
   this.object.size.y = 10
 
   this.object.position.x = random(width)
-  this.object.position.y = random(height)
+  this.object.position.y = random(height/2)
 
   this.object.velocity.x = random(2) - random(2)
-  this.object.velocity.y = 1
+  this.object.velocity.y = 1 + random(1)
   this.object.frictionCoeff = 0
 
   this.object.hits_boundary = true
