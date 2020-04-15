@@ -8,7 +8,7 @@ var points = 0
 var msg = 'Use the arrow keys to move!'
 
 const num_food = 10
-const num_platforms = 5
+var num_platforms = 5
 
 const GameModes = Object.freeze({ playing: 1, loose: 2 })
 
@@ -20,7 +20,17 @@ function reset () {
   food = []
   platforms = []
   game_mode = GameModes.playing
-  msg = 'Use the arrow keys to move!'
+  msg = 'Use the arrow keys to move! Collect stars! Do not fall down!'
+  reset_num_platforms()
+  console.log('reset. num_platforms=' + num_platforms)
+  while (platforms.length < num_platforms) {
+    platforms.push(new Platform())
+    platforms[platforms.length - 1].object.position.y = random(height)
+  }
+}
+
+function reset_num_platforms () {
+  num_platforms = height / 100
 }
 
 function setup () {
@@ -30,6 +40,8 @@ function setup () {
 
 function windowResized () {
   resizeCanvas(windowWidth, windowHeight)
+  reset_num_platforms
+  console.log('resize. num_platforms=' + num_platforms)
 }
 
 function reset_if_dead () {

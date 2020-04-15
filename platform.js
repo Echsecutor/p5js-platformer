@@ -1,11 +1,11 @@
 function Platform () {
   this.object = new PhysicalObject()
 
-  this.object.size.x = random(width / 2) + 10
+  this.object.size.x = random(width / 4) + 50
   this.object.size.y = 10
 
   this.object.position.x = random(width)
-  this.object.position.y = random(height/2)
+  this.object.position.y = 0
 
   this.object.velocity.x = random(2) - random(2)
   this.object.velocity.y = 1 + random(1)

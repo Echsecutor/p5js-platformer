@@ -15,10 +15,8 @@ function Player () {
   }
 
   this.control = function () {
-    // more realistic but anoying
-    // if (!this.object.touches_ground) return
 
-    var speed = 2
+    var speed = createVector(1, -30)
     moveDir = createVector(0, 0)
 
     if (touches.length > 0) {
@@ -30,12 +28,12 @@ function Player () {
     }
 
     if (keyIsDown(LEFT_ARROW) || moveDir.x < 0) {
-      this.object.acceleration.x += -speed
+      this.object.acceleration.x += -speed.x
     } else if (keyIsDown(RIGHT_ARROW) || moveDir.x > 0) {
-      this.object.acceleration.x += speed
+      this.object.acceleration.x += speed.x
     }
     if ((keyIsDown(UP_ARROW) || moveDir.y < 0) && this.object.touches_ground) {
-      this.object.acceleration.y += -15 * speed
+      this.object.acceleration.y += speed.y
     }
   }
 }
