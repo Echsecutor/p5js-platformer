@@ -19,24 +19,23 @@ function Player () {
     // if (!this.object.touches_ground) return
 
     var speed = 2
-
-    if (keyIsDown(LEFT_ARROW)) {
-      this.object.acceleration.x += -speed
-    }
-    if (keyIsDown(RIGHT_ARROW)) {
-      this.object.acceleration.x += speed
-    }
-    if (keyIsDown(UP_ARROW) && this.object.touches_ground) {
-      this.object.acceleration.y += -15 * speed
-    }
+    moveDir = createVector(0, 0)
 
     if (touches.length > 0) {
       //console.log(touches[0])
-      this.object.acceleration = p5.Vector.sub(
+      moveDir = p5.Vector.sub(
         createVector(touches[0].x, touches[0].y),
         this.object.position
-      ).normalize()
-      this.object.acceleration.mult(speed)
+      )
+    }
+
+    if (keyIsDown(LEFT_ARROW) || moveDir.x < 0) {
+      this.object.acceleration.x += -speed
+    } else if (keyIsDown(RIGHT_ARROW) || moveDir.x > 0) {
+      this.object.acceleration.x += speed
+    }
+    if ((keyIsDown(UP_ARROW) || moveDir.y < 0) && this.object.touches_ground) {
+      this.object.acceleration.y += -15 * speed
     }
   }
 }
